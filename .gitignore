@@ -29,8 +29,11 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# typescript build directory
+build
+
+# electron build directory
+dist
 
 # Dependency directories
 node_modules/

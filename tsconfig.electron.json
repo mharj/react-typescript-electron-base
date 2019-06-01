@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "build",
+        "module": "commonjs",
+        "target": "es6",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+    },
+    "extends": "./tsconfig.json",
+    "include": [
+        "src/main.ts"
+    ]
+}
