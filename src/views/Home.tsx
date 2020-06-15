@@ -56,11 +56,9 @@ class Home extends React.Component<Props> {
 	}
 }
 
-const mapStateToProps = (state: IReduxState) => {
-	return {
-		todo: unWrapEtag(state.demo.todo),
-	};
-};
+const mapStateToProps = (state: IReduxState) => ({
+	todo: unWrapEtag(state.demo.todo),
+});
 type IPropsState = ReturnType<typeof mapStateToProps>;
 
 const mapDispatchToProps = (dispatch: RootThunkDispatch) =>
@@ -72,7 +70,4 @@ const mapDispatchToProps = (dispatch: RootThunkDispatch) =>
 	);
 type ActionList = ReturnType<typeof mapDispatchToProps>;
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
-)(withTranslation()(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Home));

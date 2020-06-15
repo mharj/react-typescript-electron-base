@@ -18,19 +18,34 @@ if (process.env.NODE_ENV === 'development' && '__REDUX_DEVTOOLS_EXTENSION__' in 
 		enhancers.push(devToolsExtension());
 	}
 }
-const composedEnhancers = compose(
-	applyMiddleware(thunk),
-	...enhancers,
-);
+const composedEnhancers = compose(applyMiddleware(thunk), ...enhancers);
+
+let store: ReturnType<typeof initStore> | undefined;
+const initStore = () => {
+	return createStore(persistedReducer, initialState, composedEnhancers);
+};
+
+let persistor: ReturnType<typeof initPersist> | undefined;
+const initPersist = (currentStore: ReturnType<typeof initStore>) => {
+	return persistStore(currentStore);
+};
+
 /**
  * @module createStore/default
  */
 export default () => {
-	const store = createStore(
-		persistedReducer,
-		initialState,
-		composedEnhancers,
-	);
-	const persistor = persistStore(store);
+	if (!store) {
+		store = initStore();
+	}
+	if (!persistor) {
+		persistor = initPersist(store);
+	}
 	return {store, persistor};
+};
+
+export const getStore = () => {
+	if (!store) {
+		store = initStore();
+	}
+	return store;
 };

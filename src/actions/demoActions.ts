@@ -1,10 +1,10 @@
 import {Action} from 'redux';
 import {handleJsonResponse} from '.';
-import {dFetch} from '../lib/dFetch';
 import {getEtagHeader, IEtagObject, isEtagObject, wrapEtag} from '../lib/etagTools';
 import {IReduxState, RootThunkDispatch, ThunkResult, Types} from '../reducers';
 import {DemoAction, IToDo} from '../reducers/demoReducer';
 import {appError, appLogout} from './appActions';
+import {httpFetch} from '../lib/httpUtil';
 
 // dispatch actions
 const setValueAction = (todo: IEtagObject<IToDo>): DemoAction => {
@@ -22,7 +22,7 @@ export const getHome = (): ThunkResult<Promise<Action | void>> => async (dispatc
 		headers.set('if-none-match', todo.etag);
 	}
 	try {
-		const res = await dispatch(dFetch('https://jsonplaceholder.typicode.com/todos/1', {headers}));
+		const res = await httpFetch('https://jsonplaceholder.typicode.com/todos/1', {headers});
 		const todoData = await dispatch(handleJsonResponse<IToDo>(res, appLogout));
 		if (todoData) {
 			return Promise.resolve(dispatch(setValueAction(wrapEtag<IToDo>(todoData, getEtagHeader(res)))));
